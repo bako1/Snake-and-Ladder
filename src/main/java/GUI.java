@@ -49,7 +49,7 @@ public class GUI implements ActionListener {
 
         label.setFont(new Font("Broadway", Font.ITALIC, 50));
 
-        ImageIcon image = new ImageIcon("./main/resources/title.png");
+        ImageIcon image = new ImageIcon("sr/main/resources/title.png");
         label.setIcon(image);
 
 
@@ -77,14 +77,14 @@ public class GUI implements ActionListener {
 
 
         playerOneBut = new JLabel("ABDI");
-        playerOneBut.setIcon(new ImageIcon("./main/resources/horse.png"));
+        playerOneBut.setIcon(new ImageIcon("src/main/resources/horse.png"));
         playerTwoBut = new JLabel("PC");
         start = new JButton();
         start.setBackground(Color.GREEN);
         start.setBorder(BorderFactory.createEtchedBorder());
 
        // start.setBounds(20,20,10,10);
-        start.setIcon(new ImageIcon("./main/resources/start.png"));
+        start.setIcon(new ImageIcon("src/main/resources/start.png"));
         mainFrame.add(start,SOUTH);
 
 
@@ -103,7 +103,7 @@ public class GUI implements ActionListener {
         mainFrame.add(playerTwoBut,WEST);
         playerOneDice = new JButton();
 
-        playerOneDice.setIcon(new ImageIcon("./main/resources/dice4.png"));
+        playerOneDice.setIcon(new ImageIcon("src/main/resources/dice4.png"));
         playerOneDice.setFont(new Font("Broadway", Font.BOLD, 12));
         playerOnePanel = new JPanel(new GridLayout(2,1));
         playerTwoDice = new JButton("Roll Dice p2");
@@ -303,19 +303,19 @@ public void reverse(){
 
 public void setLadderAndSnake(){
         buttons.get(26).setText("");
-        buttons.get(26).setIcon(new ImageIcon("./main/resources/head.png"));
+        buttons.get(26).setIcon(new ImageIcon("src/main/resources/head.png"));
         buttons.get(20).setText("");
 
 
-        buttons.get(20).setIcon(new ImageIcon("./main/resources/bodyy.png"));
-        buttons.get(21).setIcon(new ImageIcon("./main/resources/tail.png"));
+        buttons.get(20).setIcon(new ImageIcon("src/main/resources/bodyy.png"));
+        buttons.get(21).setIcon(new ImageIcon("src/main/resources/tail.png"));
         buttons.get(21).setText("");
         buttons.get(17).setText(" ");
-        buttons.get(17).setIcon(new ImageIcon("./main/resources/head2.png"));
+        buttons.get(17).setIcon(new ImageIcon("src/main/resources/head2.png"));
         buttons.get(11).setText(" ");
-        buttons.get(11).setIcon(new ImageIcon("./main/resources/body2.png"));
+        buttons.get(11).setIcon(new ImageIcon("src/main/resources/body2.png"));
         buttons.get(10).setText("");
-        buttons.get(10).setIcon(new ImageIcon("./main/resources/tail3.png"));
+        buttons.get(10).setIcon(new ImageIcon("src/main/resources/tail3.png"));
         // buttons.get(6).setIcon(new ImageIcon("src/main/resources/ladder.png" +
         //  ""));
 
