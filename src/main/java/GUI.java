@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,32 +14,46 @@ import static java.awt.BorderLayout.*;
 public class GUI implements ActionListener {
 
     private JLabel label;
-    private int trackIndex = 0;
-    JPanel jp =  new JPanel(new BorderLayout());
+    private int trackIndexP1 ;
+    private int trackIndexP2;
     public final JFrame mainFrame;
     private final JPanel buttonsPanel;
-    private JButton diceButton;
-    private JLabel playerOneBut;
-    private JLabel playerTwoBut;
+    private JLabel playerOneLabel;
+    private JLabel playerTwoLabel;
     private JButton start;
     private JButton playerOneDice;
     private JButton playerTwoDice;
     private JPanel playerOnePanel;
     private JPanel playerTwoPanel;
-    int click;
     int p1_clickCounter = 0;
     int p2_clickCounter = 0;
+    private static final int SNAKE1_HEAD = 17;
+    private static final int SNAKE2_HEAD = 26;
+    private static final int SNAKE1_TAIL = 9;
+    private static final int SNAKE2_TAIL = 22;
+    private static final int LADDER1_FIRST_STEP = 7;
+    private static final int LADDER1_LAST_STEP = 19;
+    private static final int LADDER2_FIRST_STEP = 16;
+    private static final int LADDER2_LAST_STEP = 28;
+    private JLabel player1Token;
+    private JLabel player2Token;
+
 
     private ArrayList<JButton>buttons;
-    private static final int MAX = 36;
 
 
 
     public GUI(){
-
-        this.click = 0;
+        this.player1Token = new JLabel();
+        this.player1Token.setIcon(new ImageIcon("src/main/resources/horse.png"));
+        this.player2Token = new JLabel();
+        this.trackIndexP1 = 0; //Position of player1
+        this.trackIndexP2 = 0; //Position of player2;
+        this.start = new JButton();
+        this.playerOneDice = new JButton();
+        playerOneDice.setEnabled(false);
         this.label=new JLabel();
-        label.setOpaque(true);
+        label.setOpaque(true); //to make paint visible
         label.setBackground(Color.GREEN);
         label.setBorder(new BevelBorder(BevelBorder.RAISED));
         label.setBorder(BorderFactory.createEtchedBorder());
@@ -49,7 +62,7 @@ public class GUI implements ActionListener {
 
         label.setFont(new Font("Broadway", Font.ITALIC, 50));
 
-        ImageIcon image = new ImageIcon("sr/main/resources/title.png");
+        ImageIcon image = new ImageIcon("src/main/resources/title.png");
         label.setIcon(image);
 
 
@@ -58,17 +71,14 @@ public class GUI implements ActionListener {
         this.buttons = new ArrayList<>();
 
         buttonsPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-
-
-
-
     }
     public void initGUI(){
+
 
         EventQueue.invokeLater(()->{
 
             colorButtons();
-            eventHandler();
+
 
             mainFrame.getRootPane().setBorder(new BevelBorder(BevelBorder.RAISED));
             mainFrame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.black,5,true));
@@ -76,58 +86,16 @@ public class GUI implements ActionListener {
         });
 
 
-        playerOneBut = new JLabel("ABDI");
-        playerOneBut.setIcon(new ImageIcon("src/main/resources/horse.png"));
-        playerTwoBut = new JLabel("PC");
-        start = new JButton();
-        start.setBackground(Color.GREEN);
-        start.setBorder(BorderFactory.createEtchedBorder());
-
-       // start.setBounds(20,20,10,10);
-        start.setIcon(new ImageIcon("src/main/resources/start.png"));
-        mainFrame.add(start,SOUTH);
-
-
-        label.setForeground(Color.red);
-
 
         this.mainFrame.setSize(900,900);
         mainFrame.setResizable(true);
         this.mainFrame.setVisible(true);
         this.mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
         setButtonsPanel();
-        setPLayerLocation();
         mainFrame.add(label,NORTH);
         mainFrame.add(label,NORTH);
-        // minFrame.add(playerOneBut,EAST);
-        mainFrame.add(playerTwoBut,WEST);
-        playerOneDice = new JButton();
-
-        playerOneDice.setIcon(new ImageIcon("src/main/resources/dice4.png"));
-        playerOneDice.setFont(new Font("Broadway", Font.BOLD, 12));
-        playerOnePanel = new JPanel(new GridLayout(2,1));
-        playerTwoDice = new JButton("Roll Dice p2");
-        playerTwoDice.setBackground(Color.green);
-        playerTwoPanel = new JPanel(new GridLayout(2,1));
-        playerTwoPanel.setOpaque(true);
-        playerTwoPanel.setBackground(Color.green);
-
-        playerOnePanel.add(playerOneBut);
-        playerOnePanel.add(playerOneDice);
 
 
-        playerOneDice.setBackground(Color.green);
-        mainFrame.add(playerOnePanel,EAST);
-        playerOnePanel.setBackground(Color.green);
-        playerOnePanel.setBorder(new BevelBorder(BevelBorder.RAISED));
-        playerOnePanel.setBorder(BorderFactory.createLineBorder(Color.RED,2,true));
-        playerTwoPanel.setBorder(BorderFactory.createLineBorder(Color.RED,2,true));
-
-        playerOnePanel.setOpaque(true);
-
-        playerTwoPanel.add(playerTwoBut);
-        playerTwoPanel.add(playerTwoDice);
-        mainFrame.add(playerTwoPanel,WEST);
 
         //  this.minFrame.pack();
         buttonsPanel.setPreferredSize(new Dimension(700, 700));
@@ -155,112 +123,15 @@ public class GUI implements ActionListener {
 
 
     }
-    public void setPLayerLocation(){
-        PlayerOne p1 = new PlayerOne();
-        PlayerOne p2 = new PlayerOne();
-        //JLabel pl1 =new JLabel("Abdi");
-        //JLabel pl2 =new JLabel("Mar");
-        //buttons.get(35).add(pl1);
-        JLabel pl2 = new JLabel("Amr");
-        start.addActionListener(begin->{
-            //eventHandler();
 
-
-            buttons.get(trackIndex).add(pl2);
-            //buttons.get(buttons.size()-1).add(pl1);
-            //p1.setIndex(buttons.size()-1);
-            //p2.setIndex(buttons.size()-1);
-            //playerOneDice.setEnabled(true);
-            //playerTwoDice.setEnabled(true);
-
-            buttons.get(buttons.size()-1).setLayout(new GridLayout(1,1,1,1));
-            PlayerOne playerOne =new PlayerOne();
-
-            PlayerTwo playerTwo = new PlayerTwo();
-            playerTwo.setYourTurn(false);
-            playerOne.setYourTurn(false);
-            playerOneDice.addActionListener(a->{
-                p1_clickCounter++;
-                playerOne.setDiceOne();
-                playerTwoDice.setEnabled(false);
-                playerOneDice.setText(""+playerOne.getDiceOne());
-                playerOne.setIndex(trackIndex+playerOne.getSumOfDice());
-                buttons.get(trackIndex+ playerOne.getSumOfDice()).add(pl2);
-
-                if(p1_clickCounter>2){
-                    playerOneDice.setEnabled(false);
-                    playerTwo.setYourTurn(true);
-                    playerTwoDice.setEnabled(true);
-                }
-            });
-
-        });
-
-
-        //buttons.get(35).addActionListener(a->{
-        //            playerOneDice.addActionListener(d1->{ p1.setDiceOne();
-        //               p1.setDiceTwo();
-        //             playerOneDice.setText(""+p1.getDiceOne());
-        //       });
-
-        //buttons.get(p1.getSumOfDice()).add(l);
-        // l.setVisible(true);
-        //    });
-
+    private int setIndexPlayer1(int trackIndexP1){
+        this.trackIndexP1 = trackIndexP1;
+        return this.trackIndexP1;
 
     }
-    public void player1Turn(){
-        PlayerOne p1 = new PlayerOne();
-        PlayerTwo p2 = new PlayerTwo();
-
-        //    p1.setCountClick(click);
-        playerOneDice.addActionListener(pl1->{
-            p1.setDiceOne();
-            int firstDice = p1.getDiceOne();
-            playerOneDice.setText(""+firstDice);
-            p1.setDiceTwo();
-            int secondDice = p1.getDiceTwo();
-            playerOneDice.setText(""+secondDice);
-            playerOneDice.setEnabled(false);
-
-
-
-            //playerTwoDice.setEnabled(false);// p1.setCountClick();
-            //int c = p1.getCountClick();
-
-            //if(c>=2){
-            //  playerOneDice.setEnabled(false);
-            //playerTwoDice.setEnabled(true);
-            //p1.setCountClick();
-
-            //}else {
-            //  playerTwoDice.setEnabled(false);
-            //playerOneDice.setEnabled(true);
-
-            //}
-            //int c2 =p2.getCountClick();
-            //System.out.println("p1 click: "+c);
-            //System.out.println("p2 click: "+c2);
-            // p1.setYourTurn(true);
-            // p2.setYourTurn(false);
-
-            // if(p1.getCountClick()>=2)
-            // {playerOneDice.setEnabled(false);
-            //playerTwoDice.setEnabled(true);
-            //          }
-        });
-
-    }
-    private int setIndexPlayer1(int index){
-        return index;
-
-    }
-
-    public void diceButton(){
-        this.diceButton = new JButton("Roll Dice");
-
-        jp.add(diceButton);
-        mainFrame.add(jp);
+    private int setIndexPlayer2(int trackIndexP2){
+        this.trackIndexP2 = trackIndexP2;
+        return this.trackIndexP2;
 
     }
 
@@ -270,10 +141,7 @@ buttons.get(0).setFont(new Font("Broadway", Font.ITALIC, 20));
 
 buttons.get(35).setText("FINISH");
 buttons.get(0).setText("START");
-try {
-
-
-            for (int i = 1; i < buttons.size(); i +=5) {
+try { for (int i = 1; i < buttons.size(); i +=5) {
                 buttons.get(i+1).setBackground(Color.GRAY);
                 buttons.get(i + 2).setBackground(Color.CYAN);
                 buttons.get(i + 3).setBackground(Color.BLACK);
@@ -285,20 +153,8 @@ try {
         }
 }
 
-public void eventHandler(){
-        ActionListener actionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Object object = e.getSource();
-                if(object==start){
-                    buttons.get(buttons.size()-1).add(playerOneBut);
-                }
-            }
-        };
 
-}
-public void reverse(){
-        Collections.reverse(buttons);
+public void reverse(){ Collections.reverse(buttons);
 }
 
 public void setLadderAndSnake(){
@@ -321,11 +177,164 @@ public void setLadderAndSnake(){
 
 }
 
+//Sets the Start button
+public JButton setStartButton(){
+        this.start.setBackground(Color.GREEN);
+        this.start.setBorder(BorderFactory.createEtchedBorder());
+
+        this.start.setIcon(new ImageIcon("src/main/resources/start.png"));
+        mainFrame.add(this.start,SOUTH);
+        System.out.println("Ajaaaab");
+        return this.start;
+
+}
+
+public JButton setPlayerOnePanel(){
+        this.playerOneDice.setIcon(new ImageIcon("src/main/resources/dice4.png"));
+        this.playerOneDice.setFont(new Font("Broadway", Font.BOLD, 12));
+        this.playerOnePanel = new JPanel(new GridLayout(2,1));
+        this.playerOneLabel = new JLabel("ABDI");
+        this.playerOneLabel.setIcon(new ImageIcon("src/main/resources/horse.png"));
+
+        playerOnePanel.add(playerOneLabel);
+        playerOnePanel.add(playerOneDice);
+        playerOneDice.setBackground(Color.green);
+
+        playerOnePanel.setBackground(Color.green);
+        playerOnePanel.setBorder(new BevelBorder(BevelBorder.RAISED));
+        playerOnePanel.setBorder(BorderFactory.createLineBorder(Color.RED,2,true));
+        mainFrame.add(playerOnePanel,EAST);
+        //playerOnePanel.setOpaque(true);
+
+
+        return this.playerOneDice;
+}
+public JButton setPlayerTwoPanel(){
+        playerTwoLabel = new JLabel("PC");
+        label.setForeground(Color.red);
+        mainFrame.add(playerTwoLabel,WEST);
+        playerTwoDice = new JButton("Roll Dice p2");
+        playerTwoDice.setBackground(Color.green);
+        playerTwoPanel = new JPanel(new GridLayout(2,1));
+        playerTwoPanel.setOpaque(true);
+
+        playerTwoPanel.setBackground(Color.green);
+        playerTwoPanel.setBorder(BorderFactory.createLineBorder(Color.RED,2,true));
+        playerTwoPanel.add(playerTwoLabel);
+        playerTwoPanel.add(playerTwoDice);
+        mainFrame.add(playerTwoPanel,WEST);
+        playerTwoDice.setEnabled(false);
+        return playerTwoDice;
+
+}
+
+    public void setUpActionListener(){
+        start.addActionListener(this::actionPerformed);
+        playerOneDice.addActionListener(this::actionPerformed);
+        playerTwoDice.addActionListener(this::actionPerformed);
+
+    }
+    public void reset(){
+        trackIndexP1 = 0;
+        trackIndexP2 = 0;
+        buttons.get(trackIndexP1).add(player1Token);
+        buttons.get(trackIndexP1).add(player2Token);
+        setIndexPlayer1(0);
+        setIndexPlayer2(0);
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object object = e.getSource();
-        if(object==start){
-            buttons.get(buttons.size()-1).add(playerOneBut);
+        ImageIcon imageIcon1 = new ImageIcon("src/main/resources/dice1.png");
+        ImageIcon imageIcon2 = new ImageIcon("src/main/resources/dice2.png");
+        ImageIcon imageIcon3 = new ImageIcon("src/main/resources/dice3.png");
+        ImageIcon imageIcon4 = new ImageIcon("src/main/resources/dice4.png");
+        ImageIcon imageIcon5 = new ImageIcon("src/main/resources/dice5.png");
+        ImageIcon imageIcon6 = new ImageIcon("src/main/resources/dice.png");
+
+        if(e.getSource()==setStartButton()){
+            reset();
+
+            this.playerTwoDice.setEnabled(true);
+            this.playerOneDice.setEnabled(true);
+            this.p1_clickCounter = 0;
+            this.p2_clickCounter = 0;
+
+        }else if(e.getSource()==playerOneDice){
+            PlayerOne playerOne = new PlayerOne();
+            PlayerTwo playerTwo = new PlayerTwo();
+            playerTwoDice.setEnabled(false);
+            p1_clickCounter++;
+            p2_clickCounter = 0;
+            playerTwo.reset();
+            int dice1 = playerOne.getDiceOne();
+            int dice2 = playerOne.getDiceTwo();
+
+            if(p1_clickCounter==1){
+
+                //int sum = dice1+dice2;
+                switch (dice1){
+                    case 1:
+                        playerOneDice.setIcon(imageIcon1);
+                        System.out.println(dice1); break;
+                    case 2:
+                        playerOneDice.setIcon(imageIcon2);
+                        System.out.println(dice1); break;
+
+                    case 3:
+                        playerOneDice.setIcon(imageIcon3);
+                        System.out.println(dice1); break;
+
+                    case 4:
+                        playerOneDice.setIcon(imageIcon4);System.out.println(dice1); break;
+                    case 5:
+                        playerOneDice.setIcon(imageIcon5);System.out.println(dice1); break;
+                    case 6:
+                        playerOneDice.setIcon(imageIcon6);System.out.println(dice1);
+                }
+            } else {
+
+                switch (dice2){
+                    case 1:
+                        playerOneDice.setIcon(imageIcon1);
+                        System.out.println(dice2); break;
+                    case 2:
+                        playerOneDice.setIcon(imageIcon2); System.out.println(dice2);break;
+                    case 3:
+                        playerOneDice.setIcon(imageIcon3); System.out.println(dice2);break;
+                    case 4:
+                        playerOneDice.setIcon(imageIcon4); System.out.println(dice2);break;
+                    case 5:
+                        playerOneDice.setIcon(imageIcon5); System.out.println(dice2);break;
+                    case 6:
+                        playerOneDice.setIcon(imageIcon6);System.out.println(dice2);break;
+                }
+
+                buttons.get(trackIndexP1+playerOne.getSumOfDice()).add(player1Token);
+                System.out.println(" SUM: "+ playerOne.getSumOfDice());
+                setIndexPlayer1(trackIndexP1+playerOne.getSumOfDice());
+
+            }
+
+            if(p1_clickCounter>=2){
+                playerOneDice.setEnabled(false);
+                playerTwoDice.setEnabled(true);
+                playerOne.reset();
+
+            }
+
+        }else if (e.getSource()==playerTwoDice){
+            PlayerOne playerOne = new PlayerOne();
+            playerOneDice.setEnabled(false);
+            p2_clickCounter++;
+            p1_clickCounter = 0;
+            if(p2_clickCounter>=2){
+                playerTwoDice.setEnabled(false);
+                playerOneDice.setEnabled(true);
+                playerOne.reset();
+
+
+            }
         }
+
     }
 }

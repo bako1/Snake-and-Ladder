@@ -11,11 +11,11 @@ public class Dice {
     }
 
 
-    public int SetRollDice(){
+    public int getRollDice(){
         this.rollDice =(int) ((random() * MAX) + 1);
         return rollDice;
     }
-    public int getRollDice(){
-        return this.rollDice;
+    public void setRollDice(int rollDice){
+        this.rollDice = rollDice;
     }
 }
